@@ -1,38 +1,98 @@
-.App {
-  text-align: center;
+/* Reset mặc định */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa; /* Màu nền nhẹ nhàng */
+  color: #333; /* Màu chữ cơ bản */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+nav {
+  background-color: #007bff; /* Màu xanh dương */
+  padding: 10px 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-content: space-between;
+}
+
+nav a {
   color: white;
+  text-decoration: none;
+  margin-right: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+nav a:hover {
+  color: #ffd700; /* Vàng nhạt khi hover */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+nav a:last-child {
+  margin-right: 0;
+}
+
+/* Container chính */
+div {
+  padding: 20px;
+}
+
+/* Home page */
+h1 {
+  text-align: center;
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Button chung */
+button {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #fff;
+  background: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Nội dung của mỗi trang */
+.page-content {
+  max-width: 600px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  to {
-    transform: rotate(360deg);
+
+  nav a {
+    margin-bottom: 10px;
+  }
+
+  nav a:last-child {
+    margin-bottom: 0;
   }
 }

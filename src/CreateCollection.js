@@ -1,22 +1,24 @@
 import React, { useState } from "react";
+import "./CreateCollection.css"; // Import file CSS đã thiết kế
 
 const CreateCollection = () => {
-  const [name, setName] = useState("");           // Tên collection
+  const [name, setName] = useState(""); // Tên collection
   const [environment, setEnvironment] = useState("Development"); // Môi trường (Development mặc định)
-  const [description, setDescription] = useState("");  // Mô tả collection
-  const [imageUrl, setImageUrl] = useState("");     // URL ảnh collection
-  const [error, setError] = useState("");          // Lỗi khi tạo collection
+  const [description, setDescription] = useState(""); // Mô tả collection
+  const [imageUrl, setImageUrl] = useState(""); // URL ảnh collection
+  const [error, setError] = useState(""); // Lỗi khi tạo collection
   const [successMessage, setSuccessMessage] = useState(""); // Thông báo thành công
-  const [loading, setLoading] = useState(false);   // Loading state to disable button
+  const [loading, setLoading] = useState(false); // Trạng thái loading
 
   const handleCreateCollection = async () => {
-    // Kiểm tra nếu các trường nhập liệu chưa đầy đủ
+    setError(""); // Reset lỗi trước khi xử lý
+    setSuccessMessage(""); // Reset thông báo thành công
+
+    // Kiểm tra dữ liệu đầu vào
     if (!name || !description || !imageUrl) {
       setError("Vui lòng điền đầy đủ thông tin.");
       return;
     }
-
-    // Kiểm tra độ dài của tên và mô tả
     if (name.length > 32) {
       setError("Tên collection phải có tối đa 32 ký tự.");
       return;
@@ -26,120 +28,102 @@ const CreateCollection = () => {
       return;
     }
 
-    // Kiểm tra URL ảnh
-    const isValidUrl = (url) => {
-      const regex = /^(ftp|http|https):\/\/[^ "]+$/;
-      return regex.test(url);
-    };
-
+    const isValidUrl = (url) => /^(ftp|http|https):\/\/[^ "]+$/.test(url);
     if (!isValidUrl(imageUrl)) {
       setError("URL ảnh không hợp lệ.");
       return;
     }
 
     try {
-      setLoading(true); // Show loading spinner when submitting
-
-      // Gửi yêu cầu tạo collection đến API
+      setLoading(true);
       const response = await fetch("https://api.gameshift.dev/nx/asset-collections", {
         method: "POST",
         headers: {
-          "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJmYTE5MDRkYy0xYmYzLTQ4ZTItYjk4OS0wZmFjMzk1OTEwMTAiLCJzdWIiOiIxZGY5M2IzYi0yNTI4LTRkZjMtYWQzOS1mMDJkZDU4OWYxMTIiLCJpYXQiOjE3MzIyNzg0OTV9.XhrKnNu9wjQBHulbTH2wZB6UHvdK04pTbee59zX28Fs", // Replace with the actual API key from env
+          "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5YzNkNzM1Ny0zNzhhLTQ1NDItYWQ1ZC05NDNjMjZmYjNmMzQiLCJzdWIiOiIwZTk5OGFmMi01MWRhLTQ3MjQtOTcyYy1iYjQ3NTlmNWM4MzkiLCJpYXQiOjE3MzI0Mjk5MzB9.3FkQF_tEusBdeWiUhNj369HAnQ-XcxFEKeFlGV1A4Qw",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name,
-          environment,
-          description,
-          imageUrl,
-        }),
+        body: JSON.stringify({ name, environment, description, imageUrl }),
       });
 
-      // Kiểm tra nếu yêu cầu không thành công
       if (!response.ok) {
         const errorData = await response.json();
-        setError(errorData.message || "Không thể tạo collection.");
-        setLoading(false);
-        return;
+        throw new Error(errorData.message || "Không thể tạo collection.");
       }
 
-      // Nếu thành công
       setSuccessMessage("Tạo collection thành công!");
-      setName(""); // Reset form
+      setName("");
       setDescription("");
       setImageUrl("");
-      setEnvironment("Development"); // Reset môi trường về mặc định
-      setError(""); // Reset lỗi cũ nếu có
-      setLoading(false); // Hide loading spinner
+      setEnvironment("Development");
     } catch (error) {
-      setError(error.message); // Hiển thị lỗi nếu có
-      setLoading(false); // Hide loading spinner
+      setError(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="create-asset-container">
       <h2>Tạo Collection Mới</h2>
-      
-      {/* Tên collection */}
-      <div>
-        <label htmlFor="name">Collection Name:</label>
+      <div className="form-group">
+        <label htmlFor="name">Tên Collection:</label>
         <input
           type="text"
           id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Tên collection"
+          className="form-control"
           maxLength="32"
         />
-        <p>{name.length} / 32 characters</p>
+        <small>{name.length} / 32 ký tự</small>
       </div>
 
-      {/* Môi trường */}
-      <div>
-        <label htmlFor="environment">Environment:</label>
+      <div className="form-group">
+        <label htmlFor="environment">Môi Trường:</label>
         <select
           id="environment"
           value={environment}
           onChange={(e) => setEnvironment(e.target.value)}
+          className="form-control"
         >
           <option value="Development">Development</option>
         </select>
       </div>
 
-      {/* Mô tả collection */}
-      <div>
-        <label htmlFor="description">Description:</label>
+      <div className="form-group">
+        <label htmlFor="description">Mô Tả:</label>
         <textarea
           id="description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Mô tả collection"
+          className="form-control"
           maxLength="64"
         />
-        <p>{description.length} / 64 characters</p>
+        <small>{description.length} / 64 ký tự</small>
       </div>
 
-      {/* URL ảnh */}
-      <div>
-        <label htmlFor="imageUrl">Collection Image URL:</label>
+      <div className="form-group">
+        <label htmlFor="imageUrl">URL Ảnh:</label>
         <input
           type="text"
           id="imageUrl"
           value={imageUrl}
           onChange={(e) => setImageUrl(e.target.value)}
           placeholder="URL ảnh (JPG hoặc PNG)"
+          className="form-control"
         />
       </div>
 
-      {/* Thông báo lỗi */}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="error-msg">{error}</p>}
+      {successMessage && <p className="success-msg">{successMessage}</p>}
 
-      {/* Thông báo thành công */}
-      {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-
-      {/* Nút tạo collection */}
-      <button onClick={handleCreateCollection} disabled={loading}>
+      <button
+        onClick={handleCreateCollection}
+        className="submit-btn"
+        disabled={loading}
+      >
         {loading ? "Đang tạo..." : "Tạo Collection"}
       </button>
     </div>

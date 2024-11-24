@@ -1,53 +1,62 @@
-import React, { useState } from "react";
+import React, { useState } from "react";  
+import './Login.css'; // Đường dẫn đến file CSS  
 
-const Login = ({ setAuthToken }) => {
-  const [referenceId, setReferenceId] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+const Login = ({ setAuthToken }) => {  
+  const [username, setUsername] = useState(""); // Trạng thái cho tên đăng nhập  
+  const [password, setPassword] = useState(""); // Trạng thái cho mật khẩu  
+  const [error, setError] = useState(""); // Trạng thái cho thông báo lỗi  
+  const [loading, setLoading] = useState(false); // Trạng thái tải  
 
-  const handleLogin = async () => {
-    setLoading(true);
-    setError("");
-    
-    try {
-      const response = await fetch("https://api.gameshift.dev/login-by-reference", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJmZmQ2ZDc0Ny1jN2VhLTQ2NzktOGM3NS01YTVhYWVlMmUxNDkiLCJzdWIiOiJiMjg0ZTg3NC1lMjg4LTRkNmItOWM1YS04ZDMxNjdiMTNhYzMiLCJpYXQiOjE3MzIyNzg2MjR9.FStOXBNWl0bx5w8WO5YtrQQPagdMOuUs6Q9mBlTvbGg", // API Key
-        },
-        body: JSON.stringify({ referenceId }),
-      });
+  const handleLogin = async () => {  
+    setLoading(true);  
+    setError("");  
 
-      if (!response.ok) {
-        throw new Error("Đăng nhập thất bại.");
-      }
+    try {  
+      const response = await fetch("https://api.gameshift.dev/nx/auth/login", {  
+        method: "POST",  
+        headers: {  
+          "Content-Type": "application/json",  
+        },  
+        body: JSON.stringify({ username, password }), // Dữ liệu gửi đi  
+      });  
 
-      const data = await response.json();
-      setAuthToken(data.token); // Lưu token đăng nhập cho các yêu cầu API sau
-      alert("Đăng nhập thành công!");
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+      if (!response.ok) {  
+        throw new Error("Đăng nhập thất bại."); // Nếu không thành công  
+      }  
 
-  return (
-    <div>
-      <h2>Đăng nhập bằng Reference ID</h2>
-      <input
-        type="text"
-        value={referenceId}
-        onChange={(e) => setReferenceId(e.target.value)}
-        placeholder="Nhập Reference ID"
-      />
-      <button onClick={handleLogin} disabled={loading}>
-        {loading ? "Đang đăng nhập..." : "Đăng nhập"}
-      </button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
-  );
-};
+      const data = await response.json();  
+      setAuthToken(data.token); // Lưu token đăng nhập  
+      alert("Đăng nhập thành công!"); // Thông báo thành công  
+    } catch (error) {  
+      setError(error.message); // Hiển thị thông báo lỗi  
+    } finally {  
+      setLoading(false); // Kết thúc trạng thái tải  
+    }  
+  };  
+
+  return (  
+    <div className="login-container">  
+      <h2>Đăng nhập</h2>  
+      <input  
+        type="text"  
+        value={username}  
+        onChange={(e) => setUsername(e.target.value)} // Cập nhật tên người dùng  
+        placeholder="Nhập tên đăng nhập"  
+        className="input-field"  
+      />  
+      <input  
+        type="password"  
+        value={password}  
+        onChange={(e) => setPassword(e.target.value)} // Cập nhật mật khẩu  
+        placeholder="Nhập mật khẩu"  
+        className="input-field"  
+      />  
+      <button onClick={handleLogin} disabled={loading} className="login-button">  
+        {loading ? "Đang đăng nhập..." : "Đăng nhập"}  
+      </button>  
+      {error && <p className="error-message">{error}</p>} {/* Hiển thị lỗi nếu có */}  
+    </div>  
+  );  
+};  
 
 export default Login;

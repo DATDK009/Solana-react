@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import "./CreateAsset.css"; // CSS tách riêng để làm đẹp giao diện
 
-const CreateAsset = ({ authToken }) => {
+const CreateAsset = () => {
   const [assetData, setAssetData] = useState({
     collectionId: "",
     description: "",
@@ -10,10 +11,14 @@ const CreateAsset = ({ authToken }) => {
     traitValue: "",
     destinationUserReferenceId: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
+  const [status, setStatus] = useState({
+    loading: false,
+    error: "",
+    success: "",
+  });
+
+  // Xử lý thay đổi dữ liệu nhập
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setAssetData((prevData) => ({
@@ -22,8 +27,8 @@ const CreateAsset = ({ authToken }) => {
     }));
   };
 
+  // Xử lý tạo tài sản
   const handleCreateAsset = async () => {
-    // Kiểm tra dữ liệu đầu vào
     const {
       collectionId,
       description,
@@ -34,22 +39,31 @@ const CreateAsset = ({ authToken }) => {
       destinationUserReferenceId,
     } = assetData;
 
-    if (!collectionId || !description || !imageUrl || !name || !traitType || !traitValue || !destinationUserReferenceId) {
-      setError("Vui lòng nhập đầy đủ thông tin.");
+    // Kiểm tra dữ liệu đầu vào
+    if (
+      !collectionId ||
+      !description ||
+      !imageUrl ||
+      !name ||
+      !traitType ||
+      !traitValue ||
+      !destinationUserReferenceId
+    ) {
+      setStatus({ loading: false, error: "Vui lòng nhập đầy đủ thông tin.", success: "" });
       return;
     }
 
-    setLoading(true);
-    setError("");
-    setSuccess("");
+    setStatus({ loading: true, error: "", success: "" });
 
     try {
+      // const API_KEY = process.env.REACT_APP_API_KEY;
+
       const response = await fetch("https://api.gameshift.dev/nx/unique-assets", {
         method: "POST",
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json",
-          "x-api-key": authToken, // Thay thế bằng API key hợp lệ
+          "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5YzNkNzM1Ny0zNzhhLTQ1NDItYWQ1ZC05NDNjMjZmYjNmMzQiLCJzdWIiOiIwZTk5OGFmMi01MWRhLTQ3MjQtOTcyYy1iYjQ3NTlmNWM4MzkiLCJpYXQiOjE3MzI0Mjk5MzB9.3FkQF_tEusBdeWiUhNj369HAnQ-XcxFEKeFlGV1A4Qw",
         },
         body: JSON.stringify({
           details: {
@@ -69,98 +83,47 @@ const CreateAsset = ({ authToken }) => {
       });
 
       if (!response.ok) {
-        throw new Error("Không thể tạo tài sản.");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Không thể tạo tài sản.");
       }
 
       const data = await response.json();
-      setSuccess("Tạo tài sản thành công!");
-      console.log("Asset created:", data);
+      setStatus({
+        loading: false,
+        error: "",
+        success: `Tạo tài sản thành công! ID: ${data.id}`,
+      });
     } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
+      setStatus({ loading: false, error: error.message, success: "" });
     }
   };
 
   return (
-    <div>
+    <div className="create-asset-container">
       <h2>Tạo Tài Sản Mới</h2>
-      <div>
-        <label>Collection ID:</label>
-        <input
-          type="text"
-          name="collectionId"
-          value={assetData.collectionId}
-          onChange={handleInputChange}
-        />
-      </div>
 
-      <div>
-        <label>Description:</label>
-        <input
-          type="text"
-          name="description"
-          value={assetData.description}
-          onChange={handleInputChange}
-        />
-      </div>
+      {/* Form nhập liệu */}
+      {Object.keys(assetData).map((field) => (
+        <div key={field} className="form-group">
+          <label>{field.replace(/([A-Z])/g, " $1").toUpperCase()}:</label>
+          <input
+            type="text"
+            name={field}
+            value={assetData[field]}
+            onChange={handleInputChange}
+            className="form-control"
+          />
+        </div>
+      ))}
 
-      <div>
-        <label>Image URL:</label>
-        <input
-          type="text"
-          name="imageUrl"
-          value={assetData.imageUrl}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <div>
-        <label>Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={assetData.name}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <div>
-        <label>Trait Type:</label>
-        <input
-          type="text"
-          name="traitType"
-          value={assetData.traitType}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <div>
-        <label>Trait Value:</label>
-        <input
-          type="text"
-          name="traitValue"
-          value={assetData.traitValue}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <div>
-        <label>User Reference ID:</label>
-        <input
-          type="text"
-          name="destinationUserReferenceId"
-          value={assetData.destinationUserReferenceId}
-          onChange={handleInputChange}
-        />
-      </div>
-
-      <button onClick={handleCreateAsset} disabled={loading}>
-        {loading ? "Đang tạo tài sản..." : "Tạo tài sản"}
+      {/* Nút tạo tài sản */}
+      <button onClick={handleCreateAsset} disabled={status.loading} className="submit-btn">
+        {status.loading ? "Đang tạo tài sản..." : "Tạo tài sản"}
       </button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
+      {/* Hiển thị thông báo */}
+      {status.error && <p className="error-msg">{status.error}</p>}
+      {status.success && <p className="success-msg">{status.success}</p>}
     </div>
   );
 };
