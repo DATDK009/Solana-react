@@ -39,7 +39,7 @@ const CreateCollection = () => {
       const response = await fetch("https://api.gameshift.dev/nx/asset-collections", {
         method: "POST",
         headers: {
-          "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5YzNkNzM1Ny0zNzhhLTQ1NDItYWQ1ZC05NDNjMjZmYjNmMzQiLCJzdWIiOiIwZTk5OGFmMi01MWRhLTQ3MjQtOTcyYy1iYjQ3NTlmNWM4MzkiLCJpYXQiOjE3MzI0Mjk5MzB9.3FkQF_tEusBdeWiUhNj369HAnQ-XcxFEKeFlGV1A4Qw",
+          "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ name, environment, description, imageUrl }),
