@@ -8,6 +8,7 @@ const UserItems = ({ authToken }) => {
   const [error, setError] = useState(""); // Trạng thái lỗi
   const [price, setPrice] = useState(""); // State để lưu giá nhập từ người dùng
   const [currency, setCurrency] = useState("USDC"); // Mặc định đơn vị tiền tệ là USDC
+  const [consentUrl, setConsentUrl] = useState(""); // lưu link giao dịch
 
   const handleFetchItems = async () => {
     // Kiểm tra nếu thiếu userId hoặc authToken thì thông báo lỗi
@@ -25,7 +26,7 @@ const UserItems = ({ authToken }) => {
         `https://api.gameshift.dev/nx/users/${userId}/items`,
         {
           headers: {
-            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5YzNkNzM1Ny0zNzhhLTQ1NDItYWQ1ZC05NDNjMjZmYjNmMzQiLCJzdWIiOiIwZTk5OGFmMi01MWRhLTQ3MjQtOTcyYy1iYjQ3NTlmNWM4MzkiLCJpYXQiOjE3MzI0Mjk5MzB9.3FkQF_tEusBdeWiUhNj369HAnQ-XcxFEKeFlGV1A4Qw",
+            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
             accept: "application/json",
           },
         }
@@ -60,13 +61,13 @@ const UserItems = ({ authToken }) => {
         {
           method: "POST",
           headers: {
-            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5YzNkNzM1Ny0zNzhhLTQ1NDItYWQ1ZC05NDNjMjZmYjNmMzQiLCJzdWIiOiIwZTk5OGFmMi01MWRhLTQ3MjQtOTcyYy1iYjQ3NTlmNWM4MzkiLCJpYXQiOjE3MzI0Mjk5MzB9.3FkQF_tEusBdeWiUhNj369HAnQ-XcxFEKeFlGV1A4Qw", // Thay bằng API key của bạn
+            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8", // Thay bằng API key của bạn
             "Content-Type": "application/json",
             accept: "application/json",
           },
           body: JSON.stringify({
             price: {
-              currencyId: "USDC", // Đảm bảo sử dụng "USDC" làm đơn vị tiền tệ
+              currencyId: currency, // Đảm bảo sử dụng "USDC" làm đơn vị tiền tệ
               naturalAmount: price,
             },
           }),
@@ -85,12 +86,15 @@ const UserItems = ({ authToken }) => {
         `https://api.gameshift.dev/nx/users/${userId}/items`,
         {
           headers: {
-            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI5YzNkNzM1Ny0zNzhhLTQ1NDItYWQ1ZC05NDNjMjZmYjNmMzQiLCJzdWIiOiIwZTk5OGFmMi01MWRhLTQ3MjQtOTcyYy1iYjQ3NTlmNWM4MzkiLCJpYXQiOjE3MzI0Mjk5MzB9.3FkQF_tEusBdeWiUhNj369HAnQ-XcxFEKeFlGV1A4Qw",
+            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
             accept: "application/json",
           },
         }
       );
-  
+      
+
+      const responseData = await response.json();
+        setConsentUrl(responseData.consentUrl); // Lưu consentUrl
       const updatedData = await updatedItems.json();
       setItems(updatedData.data || []); // Cập nhật danh sách mục
       alert("Sản phẩm đã được đăng bán thành công!");
@@ -167,6 +171,7 @@ const UserItems = ({ authToken }) => {
                     <button onClick={() => handleListForSale(item.item.id)} disabled={loading}>
                       {loading ? "Đang đăng bán..." : "Đăng bán"}
                     </button>
+                    <p><strong>Giao dịch:</strong> <a href={consentUrl} target="_blank" rel="noopener noreferrer">{consentUrl}</a></p>
                   </div>
                 </div>
               )}

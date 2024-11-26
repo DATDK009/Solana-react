@@ -7,7 +7,7 @@ export const apiRequest = async (method = "POST", body = null, authToken = null)
   const headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiJmZmQ2ZDc0Ny1jN2VhLTQ2NzktOGM3NS01YTVhYWVlMmUxNDkiLCJzdWIiOiJiMjg0ZTg3NC1lMjg4LTRkNmItOWM1YS04ZDMxNjdiMTNhYzMiLCJpYXQiOjE3MzIyNzg2MjR9.FStOXBNWl0bx5w8WO5YtrQQPagdMOuUs6Q9mBlTvbGg" // API Key
+    "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8" // API Key
   };
 
   if (authToken) {
