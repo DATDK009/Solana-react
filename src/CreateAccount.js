@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { apiRequest } from "./api"; // Import apiRequest từ api.js
+import './CreateAccount.css'
 
 const CreateAccount = () => {
   const [email, setEmail] = useState("");
@@ -27,7 +28,7 @@ const CreateAccount = () => {
   };
 
   return (
-    <div>
+    <div className="create-account-container">
       <h2>Đăng ký tài khoản</h2>
       {message && <p>{message}</p>}
       {error && <p>{error}</p>}
