@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CreateAsset.css"; // CSS tách riêng để làm đẹp giao diện
+import "./styles.css"; // CSS tách riêng để làm đẹp giao diện
 
 const CreateAsset = () => {
   const [assetData, setAssetData] = useState({
@@ -49,7 +49,11 @@ const CreateAsset = () => {
       !traitValue ||
       !destinationUserReferenceId
     ) {
-      setStatus({ loading: false, error: "Vui lòng nhập đầy đủ thông tin.", success: "" });
+      setStatus({
+        loading: false,
+        error: "Vui lòng nhập đầy đủ thông tin.",
+        success: "",
+      });
       return;
     }
 
@@ -58,29 +62,33 @@ const CreateAsset = () => {
     try {
       // const API_KEY = process.env.REACT_APP_API_KEY;
 
-      const response = await fetch("https://api.gameshift.dev/nx/unique-assets", {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-          "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
-        },
-        body: JSON.stringify({
-          details: {
-            collectionId,
-            description,
-            imageUrl,
-            name,
-            attributes: [
-              {
-                traitType,
-                value: traitValue,
-              },
-            ],
+      const response = await fetch(
+        "https://api.gameshift.dev/nx/unique-assets",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "x-api-key":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
           },
-          destinationUserReferenceId,
-        }),
-      });
+          body: JSON.stringify({
+            details: {
+              collectionId,
+              description,
+              imageUrl,
+              name,
+              attributes: [
+                {
+                  traitType,
+                  value: traitValue,
+                },
+              ],
+            },
+            destinationUserReferenceId,
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -117,7 +125,11 @@ const CreateAsset = () => {
       ))}
 
       {/* Nút tạo tài sản */}
-      <button onClick={handleCreateAsset} disabled={status.loading} className="submit-btn">
+      <button
+        onClick={handleCreateAsset}
+        disabled={status.loading}
+        className="submit-btn"
+      >
         {status.loading ? "Đang tạo tài sản..." : "Tạo tài sản"}
       </button>
 

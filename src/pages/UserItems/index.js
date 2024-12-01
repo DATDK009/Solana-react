@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./UserItems.css";
+import "./styles.css";
 
 const UserItems = ({ authToken }) => {
   const [userId, setUserId] = useState(""); // State để lưu userId từ input
@@ -26,7 +26,8 @@ const UserItems = ({ authToken }) => {
         `https://api.gameshift.dev/nx/users/${userId}/items`,
         {
           headers: {
-            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
+            "x-api-key":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
             accept: "application/json",
           },
         }
@@ -50,10 +51,10 @@ const UserItems = ({ authToken }) => {
       setError("Vui lòng nhập giá hợp lệ.");
       return;
     }
-  
+
     setLoading(true);
     setError(""); // Reset lỗi khi bắt đầu gửi yêu cầu
-  
+
     try {
       // Đảm bảo sử dụng USDC làm đơn vị tiền tệ
       const response = await fetch(
@@ -61,7 +62,8 @@ const UserItems = ({ authToken }) => {
         {
           method: "POST",
           headers: {
-            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8", // Thay bằng API key của bạn
+            "x-api-key":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8", // Thay bằng API key của bạn
             "Content-Type": "application/json",
             accept: "application/json",
           },
@@ -73,28 +75,29 @@ const UserItems = ({ authToken }) => {
           }),
         }
       );
-  
+
       if (!response.ok) {
         const errorData = await response.json();
-        const errorMessage = errorData.message || "Không thể đăng sản phẩm lên bán.";
+        const errorMessage =
+          errorData.message || "Không thể đăng sản phẩm lên bán.";
         setError(`Lỗi: ${errorMessage}`);
         return;
       }
-  
+
       // Sau khi đăng bán thành công, yêu cầu lại dữ liệu sản phẩm để cập nhật giá
       const updatedItems = await fetch(
         `https://api.gameshift.dev/nx/users/${userId}/items`,
         {
           headers: {
-            "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
+            "x-api-key":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
             accept: "application/json",
           },
         }
       );
-      
 
       const responseData = await response.json();
-        setConsentUrl(responseData.consentUrl); // Lưu consentUrl
+      setConsentUrl(responseData.consentUrl); // Lưu consentUrl
       const updatedData = await updatedItems.json();
       setItems(updatedData.data || []); // Cập nhật danh sách mục
       alert("Sản phẩm đã được đăng bán thành công!");
@@ -104,8 +107,6 @@ const UserItems = ({ authToken }) => {
       setLoading(false);
     }
   };
-  
-
 
   return (
     <div className="user-items-container">
@@ -124,7 +125,11 @@ const UserItems = ({ authToken }) => {
       </div>
 
       {/* Nút gọi hàm lấy dữ liệu */}
-      <button onClick={handleFetchItems} disabled={loading} className="fetch-button">
+      <button
+        onClick={handleFetchItems}
+        disabled={loading}
+        className="fetch-button"
+      >
         {loading ? "Đang tải..." : "Tải các mục của bạn"}
       </button>
 
@@ -138,17 +143,34 @@ const UserItems = ({ authToken }) => {
         <ul>
           {items.map((item, index) => (
             <li key={index} className="item">
-              <h3>{item.type === "Currency" ? item.item.name : item.item.name}</h3>
+              <h3>
+                {item.type === "Currency" ? item.item.name : item.item.name}
+              </h3>
               {item.type === "Currency" ? (
                 <div>
-                  <p><strong>Loại:</strong> {item.item.symbol}</p>
-                  <p><strong>Số lượng:</strong> {item.quantity}</p>
+                  <p>
+                    <strong>Loại:</strong> {item.item.symbol}
+                  </p>
+                  <p>
+                    <strong>Số lượng:</strong> {item.quantity}
+                  </p>
                 </div>
               ) : (
                 <div>
-                  <p><strong>Mô tả:</strong> {item.item.description}</p>
-                  <p><strong>Thuộc tính:</strong> {item.item.attributes[0]?.traitType}: {item.item.attributes[0]?.value}</p>
-                  <img src={item.item.imageUrl} alt={item.item.name} width={'200px'} height={'200px'} />
+                  <p>
+                    <strong>Mô tả:</strong> {item.item.description}
+                  </p>
+                  <p>
+                    <strong>Thuộc tính:</strong>{" "}
+                    {item.item.attributes[0]?.traitType}:{" "}
+                    {item.item.attributes[0]?.value}
+                  </p>
+                  <img
+                    src={item.item.imageUrl}
+                    alt={item.item.name}
+                    width={"200px"}
+                    height={"200px"}
+                  />
                   {/* Form nhập giá cho sản phẩm */}
                   <div className="price-input-container">
                     <label htmlFor="price">Nhập giá: </label>
@@ -168,10 +190,22 @@ const UserItems = ({ authToken }) => {
                       <option value="USDC">USDC</option>
                       {/* Bạn có thể thêm các đơn vị tiền tệ khác ở đây */}
                     </select>
-                    <button onClick={() => handleListForSale(item.item.id)} disabled={loading}>
+                    <button
+                      onClick={() => handleListForSale(item.item.id)}
+                      disabled={loading}
+                    >
                       {loading ? "Đang đăng bán..." : "Đăng bán"}
                     </button>
-                    <p><strong>Giao dịch:</strong> <a href={consentUrl} target="_blank" rel="noopener noreferrer">{consentUrl}</a></p>
+                    <p>
+                      <strong>Giao dịch:</strong>{" "}
+                      <a
+                        href={consentUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {consentUrl}
+                      </a>
+                    </p>
                   </div>
                 </div>
               )}

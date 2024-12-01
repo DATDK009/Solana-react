@@ -5,65 +5,85 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
-  }
-  
-  .form-group {
+}
+
+.form-group {
     margin-bottom: 15px;
-  }
-  
-  label {
+}
+
+label {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
     color: #555;
-  }
-  
-  input.form-control {
+}
+
+input.form-control,
+textarea.form-control,
+select.form-control {
     width: 100%;
-    padding: 8px 10px;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
-  }
-  
-  input.form-control:focus {
+}
+
+input.form-control:focus,
+textarea.form-control:focus,
+select.form-control:focus {
     border-color: #007bff;
     outline: none;
-  }
-  
-  .submit-btn {
+}
+
+textarea.form-control {
+    resize: none;
+    height: 100px;
+}
+
+.submit-btn {
     width: 100%;
-    padding: 10px 15px;
+    padding: 12px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 16px;
     cursor: pointer;
-    margin-top: 15px;
-  }
-  
-  .submit-btn:disabled {
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.submit-btn:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-  }
-  
-  .error-msg {
+}
+
+.error-msg {
     color: red;
     margin-top: 10px;
     text-align: center;
-  }
-  
-  .success-msg {
+}
+
+.success-msg {
     color: green;
     margin-top: 10px;
     text-align: center;
-  }
-  
+}
+
+small {
+    display: block;
+    color: #888;
+    margin-top: 5px;
+    font-size: 12px;
+    text-align: right;
+}

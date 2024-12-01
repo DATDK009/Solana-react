@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
-import './PhantomWallet.css';
+import "./styles.css";
 const PhantomWallet = () => {
   const [walletAddress, setWalletAddress] = useState(null);
   const [balance, setBalance] = useState(null);

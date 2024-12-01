@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { apiRequest } from "./api"; // Import apiRequest từ api.js
-import './CreateAccount.css'
+import { apiRequest } from "../../api"; // Import apiRequest từ api.js
+import "./styles.css";
 
 const CreateAccount = () => {
   const [email, setEmail] = useState("");

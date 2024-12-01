@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CreateCollection.css"; // Import file CSS đã thiết kế
+import "./styles.css"; // Import file CSS đã thiết kế
 
 const CreateCollection = () => {
   const [name, setName] = useState(""); // Tên collection
@@ -36,14 +36,18 @@ const CreateCollection = () => {
 
     try {
       setLoading(true);
-      const response = await fetch("https://api.gameshift.dev/nx/asset-collections", {
-        method: "POST",
-        headers: {
-          "x-api-key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name, environment, description, imageUrl }),
-      });
+      const response = await fetch(
+        "https://api.gameshift.dev/nx/asset-collections",
+        {
+          method: "POST",
+          headers: {
+            "x-api-key":
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, environment, description, imageUrl }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();

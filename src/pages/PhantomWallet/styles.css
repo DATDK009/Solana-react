@@ -8,22 +8,23 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     font-family: Arial, sans-serif;
-  }
-  
-  h2 {
+}
+
+h2 {
     font-size: 24px;
     color: #333;
     margin-bottom: 20px;
-  }
-  
-  p {
+}
+
+p {
     font-size: 16px;
     color: #555;
     margin: 10px 0;
-    word-break: break-all; /* Giúp hiển thị đầy đủ địa chỉ ví */
-  }
-  
-  button {
+    word-break: break-all;
+    /* Giúp hiển thị đầy đủ địa chỉ ví */
+}
+
+button {
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
@@ -33,36 +34,35 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  button:hover {
+}
+
+button:hover {
     background-color: #0056b3;
     transform: scale(1.05);
-  }
-  
-  button:active {
+}
+
+button:active {
     transform: scale(1);
-  }
-  
-  button:disabled {
+}
+
+button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-  }
-  
-  .wallet-address {
+}
+
+.wallet-address {
     font-weight: bold;
     color: #007bff;
-  }
-  
-  .wallet-balance {
+}
+
+.wallet-balance {
     font-size: 18px;
     font-weight: bold;
     color: #28a745;
-  }
-  
-  .error-msg {
+}
+
+.error-msg {
     color: red;
     font-size: 14px;
     margin-top: 10px;
-  }
-  
+}

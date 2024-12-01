@@ -8,41 +8,41 @@
     background-color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
-  }
-  
-  h2 {
+}
+
+h2 {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
-  }
-  
-  /* Phần input nhập ID người dùng */
-  .input-container {
+}
+
+/* Phần input nhập ID người dùng */
+.input-container {
     margin-bottom: 15px;
-  }
-  
-  .input-container label {
+}
+
+.input-container label {
     font-size: 16px;
     font-weight: bold;
     display: block;
     margin-bottom: 5px;
-  }
-  
-  .input-container input {
+}
+
+.input-container input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
-  }
-  
-  .input-container input:focus {
+}
+
+.input-container input:focus {
     outline: none;
     border-color: #66cc66;
-  }
-  
-  /* Nút tải dữ liệu */
-  .fetch-button {
+}
+
+/* Nút tải dữ liệu */
+.fetch-button {
     width: 100%;
     padding: 12px;
     font-size: 16px;
@@ -52,71 +52,70 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
-  
-  .fetch-button:disabled {
+}
+
+.fetch-button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
-  }
-  
-  .fetch-button:hover:enabled {
+}
+
+.fetch-button:hover:enabled {
     background-color: #0056b3;
-  }
-  
-  /* Hiển thị thông báo lỗi */
-  .error-message {
+}
+
+/* Hiển thị thông báo lỗi */
+.error-message {
     color: red;
     font-weight: bold;
     text-align: center;
     margin-top: 20px;
-  }
-  
-  /* Danh sách các mục của người dùng */
-  ul {
+}
+
+/* Danh sách các mục của người dùng */
+ul {
     list-style-type: none;
     padding: 0;
-  }
-  
-  li {
+}
+
+li {
     padding: 15px;
     background-color: #fff;
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
-  }
-  
-  h3 {
+}
+
+h3 {
     margin: 0;
     font-size: 18px;
     color: #333;
-  }
-  
-  /* Các phần tử bên trong mục */
-  li div {
+}
+
+/* Các phần tử bên trong mục */
+li div {
     margin-top: 10px;
-  }
-  
-  li p {
+}
+
+li p {
     margin: 5px 0;
     font-size: 14px;
     color: #555;
-  }
-  
-  li img {
+}
+
+li img {
     margin-top: 10px;
     border-radius: 8px;
-  }
-  
-  /* Trạng thái đang tải */
-  p {
+}
+
+/* Trạng thái đang tải */
+p {
     text-align: center;
     font-size: 16px;
     color: #333;
-  }
-  
-  /* Khi không có mục nào */
-  p:empty {
+}
+
+/* Khi không có mục nào */
+p:empty {
     font-style: italic;
     color: #777;
-  }
-  
+}
