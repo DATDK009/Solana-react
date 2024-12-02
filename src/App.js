@@ -7,7 +7,6 @@ import CreateCollection from "./pages/CreateCollection";
 import CreateAccount from "./pages/CreateAccount";
 import GameShiftPayment from "./pages/GameShiftPayment";
 import HomePage from "./pages/Home";
-import PhantomWallet from "./pages/PhantomWallet";
 import UserItems from "./pages/UserItems";
 
 const App = () => {
@@ -20,7 +19,6 @@ const App = () => {
         <Switch>
           <Route exact path="/" index component={HomePage} />
           <Route path="/payment" component={GameShiftPayment} />
-          <Route path="/wallet" component={PhantomWallet} />
           <Route
             path="/create-account"
             component={() => (
