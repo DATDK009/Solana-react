@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import "./styles.css";
 
 const HomePage = () => {
   const history = useHistory();
@@ -90,8 +91,8 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Welcome to the Solana Market</h1>
-      <table className="table table-striped table-hover">
+      <h1 className="title">Welcome to the Solana Market</h1>
+      <table className="table">
         <thead>
           <tr>
             <th>Ảnh</th>

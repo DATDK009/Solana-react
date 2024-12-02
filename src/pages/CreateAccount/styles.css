@@ -1,6 +1,6 @@
-/* Container chính cho form */
 .create-account-container {
     max-width: 500px;
+    /* width: 61rem; */
     margin: 40px auto;
     padding: 20px;
     border: 1px solid #ddd;
@@ -10,19 +10,16 @@
     font-family: 'Arial', sans-serif;
 }
 
-/* Tiêu đề của form */
 .create-account-container h2 {
     text-align: center;
     color: #333;
     margin-bottom: 20px;
 }
 
-/* Group mỗi input và label */
 .create-account-container .form-group {
     margin-bottom: 15px;
 }
 
-/* Label */
 .create-account-container label {
     display: block;
     font-size: 14px;
@@ -31,7 +28,6 @@
     margin-bottom: 5px;
 }
 
-/* Input chung */
 .create-account-container input {
     width: 100%;
     padding: 10px;
@@ -41,14 +37,12 @@
     transition: border-color 0.3s ease;
 }
 
-/* Hiệu ứng focus cho input */
 .create-account-container input:focus {
     border-color: #007bff;
     outline: none;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
-/* Nút submit */
 .create-account-container button {
     width: 100%;
     padding: 10px;
@@ -63,12 +57,10 @@
     margin-top: 10px;
 }
 
-/* Hiệu ứng hover cho nút */
 .create-account-container button:hover {
     background-color: #0056b3;
 }
 
-/* Thông báo lỗi */
 .create-account-container .error-msg {
     color: red;
     font-size: 14px;
@@ -76,7 +68,6 @@
     margin-top: 10px;
 }
 
-/* Thông báo thành công */
 .create-account-container .success-msg {
     color: green;
     font-size: 14px;
@@ -84,7 +75,6 @@
     margin-top: 10px;
 }
 
-/* Đảm bảo giao diện đẹp trên màn hình nhỏ */
 @media (max-width: 480px) {
     .create-account-container {
         padding: 15px;
@@ -96,7 +86,8 @@
 }
 
 .create-account-container {
-    max-width: 600px;
+    /* max-width: 600px; */
+    width: 100%;
     margin: 50px auto;
     padding: 20px;
     border: 1px solid #ccc;

@@ -1,0 +1,90 @@
+/* Bố cục chính */
+
+/* Tiêu đề chính */
+.title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Bảng sản phẩm */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* Header của bảng */
+.table thead {
+    background-color: #333;
+    color: #fff;
+}
+
+.table thead th {
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* Dòng dữ liệu */
+.table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Ô dữ liệu */
+.table td {
+    padding: 10px;
+    vertical-align: middle;
+}
+
+/* Hình ảnh sản phẩm */
+.image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+/* Nút */
+.btn {
+    padding: 8px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #a71d2a;
+}
+
+/* Khoảng cách giữa các nút */
+.me-2 {
+    margin-right: 10px;
+}
+
+.mb-2 {
+    margin-bottom: 10px;
+}
