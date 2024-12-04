@@ -124,19 +124,6 @@ const HomePage = () => {
                 >
                   Mua
                 </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => {
-                    const confirmed = window.confirm(
-                      "Bạn chắc chắn muốn hủy đăng bán sản phẩm này?"
-                    );
-                    if (confirmed) {
-                      handleCancelListing(item.item.id); // Thực hiện xóa nếu người dùng xác nhận
-                    }
-                  }}
-                >
-                  Hủy đăng bán
-                </button>
               </td>
             </tr>
           ))}
