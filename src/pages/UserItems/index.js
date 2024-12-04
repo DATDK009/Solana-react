@@ -2,26 +2,24 @@ import React, { useState } from "react";
 import "./styles.css";
 
 const UserItems = ({ authToken }) => {
-  const [userId, setUserId] = useState(""); // State để lưu userId từ input
-  const [items, setItems] = useState([]); // State để lưu dữ liệu mục của người dùng
-  const [loading, setLoading] = useState(false); // Trạng thái loading
-  const [error, setError] = useState(""); // Trạng thái lỗi
-  const [price, setPrice] = useState(""); // State để lưu giá nhập từ người dùng
-  const [currency, setCurrency] = useState("USDC"); // Mặc định đơn vị tiền tệ là USDC
-  const [consentUrl, setConsentUrl] = useState(""); // lưu link giao dịch
+  const [userId, setUserId] = useState("");
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [price, setPrice] = useState("");
+  const [currency, setCurrency] = useState("USDC"); // Mặc định là "USDC"
+  // const [consentUrl, setConsentUrl] = useState("");
 
   const handleFetchItems = async () => {
-    // Kiểm tra nếu thiếu userId hoặc authToken thì thông báo lỗi
     if (!userId) {
       setError("Vui lòng nhập ID người dùng.");
-      return; // Dừng hàm nếu thiếu thông tin
+      return;
     }
 
     setLoading(true);
-    setError(""); // Reset lỗi khi bắt đầu tải lại dữ liệu
+    setError("");
 
     try {
-      // Gửi yêu cầu API để lấy các mục của người dùng
       const response = await fetch(
         `https://api.gameshift.dev/nx/users/${userId}/items`,
         {
@@ -38,44 +36,46 @@ const UserItems = ({ authToken }) => {
       }
 
       const data = await response.json();
-      setItems(data.data || []); // Lưu danh sách mục
+      setItems(data.data || []);
     } catch (error) {
-      setError(error.message); // Hiển thị thông báo lỗi nếu có
+      setError(error.message);
     } finally {
-      setLoading(false); // Đặt lại trạng thái loading
+      setLoading(false);
     }
   };
 
   const handleListForSale = async (assetId) => {
-    if (!price || isNaN(price) || price <= 0) {
+    // Kiểm tra nếu giá chưa được nhập hoặc không hợp lệ
+    if (!price[assetId] || isNaN(price[assetId]) || price[assetId] <= 0) {
       setError("Vui lòng nhập giá hợp lệ.");
       return;
     }
 
-    setLoading(true);
-    setError(""); // Reset lỗi khi bắt đầu gửi yêu cầu
+    setLoading(true); // Hiển thị trạng thái đang tải
+    setError(""); // Reset lỗi
 
     try {
-      // Đảm bảo sử dụng USDC làm đơn vị tiền tệ
+      // Gửi yêu cầu POST để đăng bán tài sản
       const response = await fetch(
         `https://api.gameshift.dev/nx/unique-assets/${assetId}/list-for-sale`,
         {
-          method: "POST",
+          method: "POST", // Phương thức POST
           headers: {
+            accept: "application/json", // Định dạng trả về là JSON
+            "content-type": "application/json", // Nội dung là JSON
             "x-api-key":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8", // Thay bằng API key của bạn
-            "Content-Type": "application/json",
-            accept: "application/json",
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
           },
           body: JSON.stringify({
             price: {
-              currencyId: currency, // Đảm bảo sử dụng "USDC" làm đơn vị tiền tệ
-              naturalAmount: price,
+              currencyId: "USDC", // Loại tiền tệ
+              naturalAmount: parseFloat(price[assetId]).toFixed(2).toString(), // Số tiền
             },
           }),
         }
       );
 
+      // Kiểm tra nếu phản hồi không OK
       if (!response.ok) {
         const errorData = await response.json();
         const errorMessage =
@@ -84,26 +84,62 @@ const UserItems = ({ authToken }) => {
         return;
       }
 
-      // Sau khi đăng bán thành công, yêu cầu lại dữ liệu sản phẩm để cập nhật giá
-      const updatedItems = await fetch(
-        `https://api.gameshift.dev/nx/users/${userId}/items`,
+      const data = await response.json();
+      const { consentUrl } = data;
+
+      // Điều hướng người dùng đến URL đồng ý
+      window.location.href = consentUrl;
+
+      // Thông báo thành công
+      alert("Sản phẩm đã được đăng bán, vui lòng hoàn tất qua URL đồng ý.");
+    } catch (error) {
+      // Xử lý lỗi khi có lỗi xảy ra
+      setError(`Có lỗi xảy ra: ${error.message}`);
+    } finally {
+      // Dừng trạng thái loading khi xong
+      setLoading(false);
+    }
+  };
+  const handleCancelListing = async (assetId) => {
+    setLoading(true); // Hiển thị trạng thái đang tải
+    setError(""); // Reset lỗi
+
+    try {
+      // Gửi yêu cầu POST để hủy đăng bán tài sản
+      const response = await fetch(
+        `https://api.gameshift.dev/nx/unique-assets/${assetId}/cancel-sale`,
         {
+          method: "POST", // Phương thức POST
           headers: {
+            accept: "application/json", // Định dạng trả về là JSON
             "x-api-key":
               "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJrZXkiOiI4ZGI1MTRiMC01YzJlLTRlMGItYmQ2Mi0zNjBiOThhZDZjZGYiLCJzdWIiOiJhZThjOTk0OS04MjUyLTQwNmUtODBkMS1iMzhhNDY4MWE4YzIiLCJpYXQiOjE3MzI0MzgwNzl9.JLD3LGE_0kt04Dcs78QqFI5Hpfl6GtFpMTlfCSXq7h8",
-            accept: "application/json",
           },
         }
       );
 
-      const responseData = await response.json();
-      setConsentUrl(responseData.consentUrl); // Lưu consentUrl
-      const updatedData = await updatedItems.json();
-      setItems(updatedData.data || []); // Cập nhật danh sách mục
-      alert("Sản phẩm đã được đăng bán thành công!");
+      // Kiểm tra nếu phản hồi không OK
+      if (!response.ok) {
+        const errorData = await response.json();
+        const errorMessage =
+          errorData.message || "Không thể hủy đăng bán tài sản.";
+        setError(`Lỗi: ${errorMessage}`);
+        return;
+      }
+
+      const data = await response.json();
+      const { consentUrl } = data;
+
+      // Điều hướng người dùng đến URL đồng ý
+      window.location.href = consentUrl;
+
+      // Thông báo thành công
+      alert("Đã hủy đăng bán tài sản, vui lòng hoàn tất qua URL đồng ý.");
     } catch (error) {
+      // Xử lý lỗi khi có lỗi xảy ra
       setError(`Có lỗi xảy ra: ${error.message}`);
     } finally {
+      // Dừng trạng thái loading khi xong
       setLoading(false);
     }
   };
@@ -124,7 +160,7 @@ const UserItems = ({ authToken }) => {
         />
       </div>
 
-      {/* Nút gọi hàm lấy dữ liệu */}
+      {/* Nút tải danh sách */}
       <button
         onClick={handleFetchItems}
         disabled={loading}
@@ -136,82 +172,106 @@ const UserItems = ({ authToken }) => {
       {/* Hiển thị lỗi nếu có */}
       {error && <p className="error-message">{error}</p>}
 
-      {/* Hiển thị danh sách mục của người dùng */}
+      {/* Thông tin ví hiển thị bên ngoài */}
+      {items.length > 0 && (
+        <div className="wallet-info">
+          <h3>Thông tin ví</h3>
+          {items
+            .filter((item) => item.type === "Currency")
+            .map((item, index) => (
+              <p key={index}>
+                {item.item.symbol}: {item.quantity}
+              </p>
+            ))}
+        </div>
+      )}
+
+      {/* Hiển thị danh sách mục trong bảng */}
       {loading ? (
         <p>Đang tải dữ liệu...</p>
       ) : items.length > 0 ? (
-        <ul>
-          {items.map((item, index) => (
-            <li key={index} className="item">
-              <h3>
-                {item.type === "Currency" ? item.item.name : item.item.name}
-              </h3>
-              {item.type === "Currency" ? (
-                <div>
-                  <p>
-                    <strong>Loại:</strong> {item.item.symbol}
-                  </p>
-                  <p>
-                    <strong>Số lượng:</strong> {item.quantity}
-                  </p>
-                </div>
-              ) : (
-                <div>
-                  <p>
-                    <strong>Mô tả:</strong> {item.item.description}
-                  </p>
-                  <p>
-                    <strong>Thuộc tính:</strong>{" "}
-                    {item.item.attributes[0]?.traitType}:{" "}
-                    {item.item.attributes[0]?.value}
-                  </p>
-                  <img
-                    src={item.item.imageUrl}
-                    alt={item.item.name}
-                    width={"200px"}
-                    height={"200px"}
-                  />
-                  {/* Form nhập giá cho sản phẩm */}
-                  <div className="price-input-container">
-                    <label htmlFor="price">Nhập giá: </label>
-                    <input
-                      type="number"
-                      id="price"
-                      value={price}
-                      onChange={(e) => setPrice(e.target.value)}
-                      placeholder="Giá sản phẩm"
+        <table className="items-table">
+          <thead>
+            <tr>
+              <th>Tên sản phẩm</th>
+              <th>Mô tả</th>
+              <th>Hình ảnh</th>
+              <th>Giá bán</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items
+              .filter((item) => item.type !== "Currency")
+              .map((item, index) => (
+                <tr key={index}>
+                  <td>{item.item.name}</td>
+                  <td>{item.item.description}</td>
+                  <td>
+                    <img
+                      src={item.item.imageUrl}
+                      alt={item.item.name}
+                      width="100"
+                      height="100"
                     />
-                    <label htmlFor="currency">Đơn vị tiền tệ: </label>
-                    <select
-                      id="currency"
-                      value={currency}
-                      onChange={(e) => setCurrency(e.target.value)}
-                    >
-                      <option value="USDC">USDC</option>
-                      {/* Bạn có thể thêm các đơn vị tiền tệ khác ở đây */}
-                    </select>
-                    <button
-                      onClick={() => handleListForSale(item.item.id)}
-                      disabled={loading}
-                    >
-                      {loading ? "Đang đăng bán..." : "Đăng bán"}
-                    </button>
-                    <p>
-                      <strong>Giao dịch:</strong>{" "}
-                      <a
-                        href={consentUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                  </td>
+                  <td>
+                    <div className="price-input-container">
+                      <label htmlFor={`price-${item.item.id}`}>
+                        Giá hiện tại:
+                      </label>
+                      <input
+                        type="number"
+                        id={`price-${item.item.id}`}
+                        value={price[item.item.id] || ""}
+                        onChange={(e) =>
+                          setPrice({
+                            ...price,
+                            [item.item.id]: e.target.value, // Cập nhật giá cho mặt hàng cụ thể
+                          })
+                        }
+                        placeholder="Nhập giá"
+                      />
+                      {/* Dropdown cho chọn currency */}
+                      <div className="currency-container">
+                        <label htmlFor="currency">Chọn loại tiền tệ: </label>
+                        <select
+                          id="currency"
+                          value={currency}
+                          onChange={(e) => setCurrency(e.target.value)}
+                        >
+                          <option value="USDC">USDC</option>
+                          {/* Có thể thêm các lựa chọn tiền tệ khác */}
+                        </select>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div>
+                      {/* Nút đăng bán */}
+                      <button
+                        onClick={() => handleListForSale(item.item.id)}
+                        disabled={loading}
                       >
-                        {consentUrl}
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
+                        {loading ? "Đang đăng bán..." : "Đăng bán"}
+                      </button>
+
+                      {/* Nút hủy đăng bán */}
+                      <button style={{ backgroundColor: "red" }}
+                        onClick={() => handleCancelListing(item.item.id)}
+                        disabled={loading}
+                      >
+                        {loading ? "Đang hủy..." : "Hủy đăng bán"}
+                      </button>
+
+                      {/* Hiển thị thông báo lỗi nếu có */}
+                      {error && <p style={{ color: "red" }}>{error}</p>}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       ) : (
         <p>Bạn không có mục nào.</p>
       )}
