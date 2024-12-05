@@ -114,7 +114,7 @@ const HomePage = () => {
                 />
               </td>
               <td>{item.item.name}</td>
-              <td>{item.item.priceCents / 100} USD</td>
+              <td>{item.item.price.naturalAmount} {item.item.price.currencyId}</td>
               <td>{item.item.description}</td>
               <td>{item.item.owner.referenceId}</td>
               <td>
