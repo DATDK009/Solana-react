@@ -48,7 +48,6 @@ const CreateCollection = () => {
           body: JSON.stringify({ name, environment, description, imageUrl }),
         }
       );
-
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Không thể tạo collection.");
