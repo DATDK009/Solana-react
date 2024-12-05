@@ -64,7 +64,7 @@ const GameShiftPayment = ({ onSale }) => {
           style={{ width: "200px", height: "auto" }}
         />
       </h2>
-      <p>Giá: {item.item.priceCents / 100} USD</p>
+      <p>Giá: {item.item.price.naturalAmount} {item.item.price.currencyId}</p>
       <p>Mô tả: {item.item.description}</p>
       <p>Chủ sở hữu: {item.item.owner?.referenceId}</p>
       <input
