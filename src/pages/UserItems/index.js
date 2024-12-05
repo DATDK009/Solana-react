@@ -152,6 +152,7 @@ const UserItems = ({ authToken }) => {
       <div className="input-container">
         <label htmlFor="userId">Nhập ID người dùng: </label>
         <input
+          className="form-control"
           type="text"
           id="userId"
           value={userId}
