@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import "./App.css";
 import LayoutHome from "./components/Layout";
+// import PhantomWallet from "./pages/PhantomWallet";
 import CreateAsset from "./pages/CreateAsset";
 import CreateCollection from "./pages/CreateCollection";
 import CreateAccount from "./pages/CreateAccount";
@@ -20,6 +21,10 @@ const App = () => {
           <Route exact path="/" index component={HomePage} />
           <Route path="/payment" component={GameShiftPayment} />
           <Route
+            path="/create-asset"
+            component={() => <CreateAsset authToken={authToken} />}
+          />
+          <Route
             path="/create-account"
             component={() => (
               <CreateAccount
@@ -27,10 +32,6 @@ const App = () => {
                 setUserId={setUserId}
               />
             )}
-          />
-          <Route
-            path="/create-asset"
-            component={() => <CreateAsset authToken={authToken} />}
           />
           <Route
             path="/user-items"
