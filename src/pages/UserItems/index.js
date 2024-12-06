@@ -107,7 +107,7 @@ const UserItems = ({ authToken }) => {
     try {
       // Gửi yêu cầu POST để hủy đăng bán tài sản
       const response = await fetch(
-        `https://api.gameshift.dev/nx/unique-assets/${assetId}/cancel-sale`,
+        `https://api.gameshift.dev/nx/unique-assets/${assetId}/cancel-listing`,
         {
           method: "POST", // Phương thức POST
           headers: {
