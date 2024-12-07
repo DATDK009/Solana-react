@@ -9,24 +9,24 @@ const Sidebar = () => {
           <i className=""></i>
         </div>
         <div className="name-logo">
-          SB Admin <sup>2</sup>
+          CNTT <sup>8</sup>
         </div>
       </div>
       <nav className="nav">
         <ul className="nav-list">
-          <li className="nav-item">
-            <Link to="/" className="nav-link">
-              Phantom Wallet
-            </Link>
-          </li>
-          <li className="nav-item">
+        <li className="nav-item">
             <Link to="/create-account" className="nav-link">
               Tạo Tài Khoản
             </Link>
           </li>
           <li className="nav-item">
+            <Link to="/" className="nav-link">
+              Chợ sản phẩm
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link to="/user-items" className="nav-link">
-              Mục của bạn
+              Thông tin tài khoản
             </Link>
           </li>
           <li className="nav-item">
